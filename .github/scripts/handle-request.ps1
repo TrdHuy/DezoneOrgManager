@@ -2,6 +2,8 @@
 $IssueNumber = $env:ISSUE_NUMBER
 $IssueTitle = $env:ISSUE_TITLE
 $IssueBody = $env:ISSUE_BODY
+$IssueCreator = $env:ISSUE_CREATOR
+$CreatorProfileUrl = $env:CREATOR_PROFILE_URL
 $GithubRepo = $env:GITHUB_REPO
 $GithubToken = $env:GITHUB_TOKEN
 $PrivateRepoUrl = $env:PRIVATE_REPO_URL
@@ -9,28 +11,16 @@ $PrivateRepoUrl = $env:PRIVATE_REPO_URL
 # Step 1: Extract fields from issue body
 Write-Host "Extracting issue details from issue #$IssueNumber..."
 if ($IssueBody -match "Email Address:\s*(.+)") {
-    $Email = $matches[1]
-    Write-Host "Extracted Email: $Email"
+    $RequesterEmail = $matches[1]
+    Write-Host "Extracted Requester Email: $RequesterEmail"
 } else {
-    Write-Error "Email not found in issue body!"
+    Write-Error "Requester email not found in issue body!"
     Exit 1
 }
 
-if ($IssueBody -match "Select Package:\s*(.+)") {
-    $Package = $matches[1]
-    Write-Host "Extracted Package: $Package"
-} else {
-    Write-Error "Package not found in issue body!"
-    Exit 1
-}
-
-if ($IssueBody -match "Reason for Request:\s*(.+)") {
-    $Reason = $matches[1]
-    Write-Host "Extracted Reason: $Reason"
-} else {
-    Write-Error "Reason not found in issue body!"
-    Exit 1
-}
+# Email of the issue creator (optional, for logging)
+Write-Host "Issue submitted by: $IssueCreator"
+Write-Host "GitHub profile: $CreatorProfileUrl"
 
 # Step 2: Clone the private repo
 Write-Host "Cloning private repository..."
@@ -53,23 +43,24 @@ Request Build Permission
 ========================
 - Issue Number: $IssueNumber
 - Title: $IssueTitle
-- Email: $Email
-- Package: $Package
-- Reason: $Reason
+- Requester Email: $RequesterEmail
+- Submitted by: $IssueCreator
+- Profile URL: $CreatorProfileUrl
+- Reason: $IssueBody
 "@
 
 Write-Host "Committing changes..."
 git add .
-git commit -m "Request Build Permission for $Package by $Email"
+git commit -m "Build Permission Request by $RequesterEmail for issue #$IssueNumber"
 git push origin $BranchName
 
 # Step 4: Create a pull request in private repo
 Write-Host "Creating pull request..."
 $PullRequestData = @{
-    title = "Request Build Permission for $Package"
+    title = "Request Build Permission for Issue #$IssueNumber"
     head = $BranchName
     base = "main"
-    body = "This pull request is auto-generated to request build permissions for the following:\n\n- **Package**: $Package\n- **Requested by**: $Email\n- **Reason**: $Reason\n\nLinked Issue: https://github.com/$GithubRepo/issues/$IssueNumber"
+    body = "This pull request is auto-generated to request build permissions for issue #$IssueNumber.\n\n- **Requester Email**: $RequesterEmail\n- **Submitted by**: $IssueCreator ($CreatorProfileUrl)"
 } | ConvertTo-Json -Depth 10
 
 $PullRequestResponse = Invoke-RestMethod -Uri "https://api.github.com/repos/private-org/private-repo-B/pulls" `
