@@ -1,37 +1,47 @@
-name: Request Build Permission
-description: Use this form to request build permissions for a package.
-title: "[REQUEST] Build Permission for <package_name>"
-labels: request
+name: "🔑 Request Build Permission"
+description: Request permissions to build a specific package.
+title: "REQUEST: Build Permission for <package_name>"
+labels: ["request"]
+
 body:
   - type: markdown
     attributes:
       value: |
         ## Request Build Permission
-        Please provide the necessary information below to request build permissions.
+        Please fill out the form below to request build permissions for a specific package.
+        Ensure all required fields are completed.
 
   - type: input
-    id: email
     attributes:
       label: Email Address
-      description: Enter your email address to receive updates.
-      placeholder: "your-email@example.com"
+      description: Enter your email address to receive updates regarding your request.
+      placeholder: "example@example.com"
+    validations:
       required: true
+      regex: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
   - type: dropdown
-    id: package_name
     attributes:
       label: Select Package
-      description: Choose the package for which you need build permissions.
+      description: Choose the package for which you are requesting build permissions.
       options:
         - Package A
         - Package B
         - Package C
         - Package D
+    validations:
       required: true
 
   - type: textarea
-    id: reason
     attributes:
       label: Reason for Request
       description: Provide a brief explanation of why you need build permissions for this package.
       placeholder: "Enter your reason here..."
+    validations:
+      required: true
+
+  - type: textarea
+    attributes:
+      label: Additional Notes
+      description: Include any additional information or context for your request.
+      placeholder: "Optional field, you can leave it blank."
