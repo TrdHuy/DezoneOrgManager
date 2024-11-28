@@ -1,6 +1,6 @@
 name: "🔑 Request Build Permission"
 description: Request permissions to build a specific package.
-title: "[PBPR]_REQUEST: Package Build Permission"
+title: "[PBPR] Package Build Permission"
 labels: ["request"]
 
 body:
@@ -25,10 +25,7 @@ body:
       label: Select Package
       description: Choose the package for which you are requesting build permissions.
       options:
-        - Package A
-        - Package B
-        - Package C
-        - Package D
+        - ArtWiz
     validations:
       required: true
 
