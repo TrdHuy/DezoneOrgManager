@@ -1,0 +1,27 @@
+name: Handle Build Permission Request
+
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process-issue:
+    name: Process Build Permission Request
+    runs-on: windows-latest
+
+    steps:
+      # Step 1: Checkout repository
+      - name: Checkout Repo A
+        uses: actions/checkout@v3
+
+      # Step 2: Run PowerShell Script
+      - name: Run PowerShell Script to Process Issue
+        run: |
+          pwsh.exe -File .github/scripts/handle-request.ps1
+        env:
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          GITHUB_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRIVATE_REPO_URL: ${{ secrets.PRIVATE_REPO }}
