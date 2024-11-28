@@ -1,6 +1,6 @@
 name: "🔑 Request Build Permission"
 description: Request permissions to build a specific package.
-title: "REQUEST: Build Permission for <package_name>"
+title: "[PBPR]_REQUEST: Package Build Permission"
 labels: ["request"]
 
 body:
