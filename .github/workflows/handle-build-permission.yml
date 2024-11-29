@@ -24,7 +24,7 @@ jobs:
           ISSUE_NUMBER: ${{ github.event.issue.number }}
           ISSUE_TITLE: ${{ github.event.issue.title }}
           ORG_NAME_FOR_VALIDATION: "Dezone99"
-          NAME_OF_REPO_CONTAINING_PERMISSION_REQUEST: ${{ github.event.repository.name }}"
+          NAME_OF_REPO_CONTAINING_PERMISSION_REQUEST: ${{ github.event.repository.name }}
           REPO_OWNER: ${{ github.event.repository.owner.login }}
           CREATOR_PROFILE_URL: ${{ github.event.issue.user.html_url }}
           GITHUB_TOKEN: ${{ secrets.WORK_FLOW_ACCESS_TOKEN }}
