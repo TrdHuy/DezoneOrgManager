@@ -31,19 +31,20 @@ function Update-PermissionFile {
 
     $PermissionExists = $false
     $User = $JsonContent.users | Where-Object { $_.username -eq $IssueCreator }
+    $GeneratedApiKey = [guid]::NewGuid().ToString()
     if (-not $User) {
         # Add new user
         $NewUser = @{
             username = $IssueCreator
             email    = $RequesterEmail
-            packages = @{ $SelectedPackage = [guid]::NewGuid().ToString() }
+            packages = @{ $SelectedPackage = $GeneratedApiKey }
         }
         $JsonContent.users += $NewUser
     }
     else {
         # Update existing user
         if (-not $User.packages.$SelectedPackage) {
-            $User.packages.Add($SelectedPackage, [guid]::NewGuid().ToString())
+            $User.packages.Add($SelectedPackage, $GeneratedApiKey)
         }
         else {
             # Permission already exists
@@ -56,6 +57,7 @@ function Update-PermissionFile {
         UpdatedContent   = $JsonContent | ConvertTo-Json -Depth 10
         Sha              = $FileContent.sha
         PermissionExists = $PermissionExists
+        ApiKey           = $GeneratedApiKey
     }
 }
 
@@ -243,6 +245,7 @@ $PermissionUpdate = Update-PermissionFile -BaseApiUrl $BaseApiUrl `
     -FilePath $PermissionFilePath -BranchName $BranchStorePermissionFile `
     -RequesterEmail $RequesterEmail -IssueCreator $CreatorUsername `
     -SelectedPackage $SelectedPackage -AccessToken $AccessToken
+$GeneratedApiKey = $PermissionUpdate.ApiKey
 # Kiểm tra trạng thái quyền
 if ($PermissionUpdate.PermissionExists -eq $true) {
     Write-Host "Permission for user '$CreatorUsername' to access package '$SelectedPackage' already exists."
@@ -306,15 +309,17 @@ Update-GitHubContent -Owner $RepoOwner -Repo $RepoForSubmitRequest `
 # Step 7: Tạo pull request
 $PullRequestBody = @"
 ### RequestId: 
-    $IssueNumber
+$IssueNumber
 ### User: 
-    $CreatorUsername
+$CreatorUsername
 ### Email:
-    $RequesterEmail
+$RequesterEmail
 ### Package: 
-    $SelectedPackage
+$SelectedPackage
 ### Reason:
-    $Reason
+$Reason
+### ApiKey:
+$GeneratedApiKey
 ### [Detail]($RequestUrl) 
 "@
 Write-Host "Creating a pull request..."
