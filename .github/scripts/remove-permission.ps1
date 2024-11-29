@@ -244,12 +244,12 @@ if ($PullRequest) {
      
      # Step 8: Comment lên issue
      $CommentText = @"
-     ### ✅ Your request has been processed successfully and is awaiting approval!
-     ### 🔍 The request is now under review by our team.
-     
-     You can track the progress of your request here: [View Pull Request]($($PullRequest.html_url)).
-     
-     Thank you for your submission! 🚀
+### ✅ Your request has been processed successfully and is awaiting approval!
+### 🔍 The request is now under review by our team.
+
+You can track the progress of your request here: [View Pull Request]($($PullRequest.html_url)).
+
+Thank you for your submission! 🚀
 "@
      Comment-OnIssue -BaseApiUrl $BaseApiUrl `
           -RepoOwner $RepoOwner -RepoName $NameOfRepoContainingPermissionRequest `
