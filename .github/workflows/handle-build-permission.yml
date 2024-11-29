@@ -2,7 +2,9 @@ name: Handle Build Permission Request
 
 on:
   issues:
-    types: [opened]
+    types:
+      - opened
+      - reopened
 
 jobs:
   process-issue:
