@@ -14,8 +14,8 @@ body:
   - type: input
     attributes:
       label: 📧 Email Address
-      description: Enter your email address to receive updates regarding your request.  
-                   _Example: `example@example.com`_
+      description: "Enter your email address to receive updates regarding your request.  
+                   _Example: `example@example.com`_"
       placeholder: "example@example.com"
     validations:
       required: true
@@ -33,8 +33,8 @@ body:
   - type: textarea
     attributes:
       label: ✍️ Reason for Request
-      description: Provide a brief explanation of why you need build permissions for this package.  
-                   _Example: `I am responsible for maintaining the package.`_
+      description: "Provide a brief explanation of why you need build permissions for this package.  
+                   _Example: `I am responsible for maintaining the package.`_"
       placeholder: "Enter your reason here..."
     validations:
       required: true
@@ -42,8 +42,8 @@ body:
   - type: textarea
     attributes:
       label: 💬 Additional Notes
-      description: Include any additional information or context for your request.  
-                   _This field is optional._
+      description: "Include any additional information or context for your request.  
+                   _This field is optional._"
       placeholder: "Optional field, you can leave it blank."
 
   - type: markdown
