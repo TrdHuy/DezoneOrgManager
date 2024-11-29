@@ -1,7 +1,8 @@
 name: "🛑 Remove Build Permissions Request"
 description: "🚀 Request to remove all build permissions for a specific user"
 title: "[PBPR] Remove permission "
-labels: ["remove-permissions"]
+labels: 
+  - "remove-permissions"
 
 body:
   - type: markdown
@@ -13,18 +14,18 @@ body:
 
   - type: input
     attributes:
-      label: 👤 GitHub Username
-      description: The GitHub username of the person whose build permissions should be removed.  
-                   _Example: `example-username`_
+      label: "👤 GitHub Username"
+      description: "The GitHub username of the person whose build permissions should be removed.  
+                   _Example: `example-username`_"
       placeholder: "example-username"
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: 📝 Reason for Removal
-      description: Provide a clear and concise reason for the removal request.  
-                   _Example: `The user no longer needs access to the build system.`_
+      label: "📝 Reason for Removal"
+      description: "Provide a clear and concise reason for the removal request.  
+                   _Example: `The user no longer needs access to the build system.`_"
       placeholder: "The user no longer needs access to the build system."
     validations:
       required: true
