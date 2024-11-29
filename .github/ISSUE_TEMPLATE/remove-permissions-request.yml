@@ -1,5 +1,5 @@
-name: "Remove Build Permissions Request"
-description: Request to remove all build permissions for a specific user
+name: "🛑 Remove Build Permissions Request"
+description: "🚀 Request to remove all build permissions for a specific user"
 title: "[PBPR] Remove permission "
 labels: ["remove-permissions"]
 
@@ -7,21 +7,30 @@ body:
   - type: markdown
     attributes:
       value: |
-        **Use this template to request the removal of all build permissions for a specific user.**
-        Please fill out the required information below.
+        ### 🛑 Remove Build Permissions Request
+        **Use this template to request the removal of all build permissions for a specific user.**  
+        Please fill out the required information below to help us process your request efficiently. 📝
 
   - type: input
     attributes:
-      label: GitHub Username
-      description: The GitHub username of the person whose build permissions should be removed.
+      label: 👤 GitHub Username
+      description: The GitHub username of the person whose build permissions should be removed.  
+                   _Example: `example-username`_
       placeholder: "example-username"
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Reason for Removal
-      description: Provide a clear and concise reason for the removal request.
+      label: 📝 Reason for Removal
+      description: Provide a clear and concise reason for the removal request.  
+                   _Example: `The user no longer needs access to the build system.`_
       placeholder: "The user no longer needs access to the build system."
     validations:
       required: true
+
+  - type: markdown
+    attributes:
+      value: |
+        Thank you for submitting this request! 🚀  
+        Our team will review and process it as soon as possible.
