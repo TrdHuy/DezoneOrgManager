@@ -29,6 +29,7 @@ function Update-PermissionFile {
     $DecodedContent = [Text.Encoding]::UTF8.GetString([Convert]::FromBase64String($FileContent.content))
     $JsonContent = $DecodedContent | ConvertFrom-Json
 
+    $PermissionExists = $false
     $User = $JsonContent.users | Where-Object { $_.username -eq $IssueCreator }
     if (-not $User) {
         # Add new user
@@ -44,12 +45,17 @@ function Update-PermissionFile {
         if (-not $User.packages.$SelectedPackage) {
             $User.packages.Add($SelectedPackage, [guid]::NewGuid().ToString())
         }
+        else {
+            # Permission already exists
+            $PermissionExists = $true
+        }
     }
 
-    # Return updated JSON
+    # Return updated JSON and permission status
     return @{
-        UpdatedContent = $JsonContent | ConvertTo-Json -Depth 10
-        Sha            = $FileContent.sha
+        UpdatedContent   = $JsonContent | ConvertTo-Json -Depth 10
+        Sha              = $FileContent.sha
+        PermissionExists = $PermissionExists
     }
 }
 
@@ -181,10 +187,10 @@ $IssueBody = $IssueResponse.body
 $RequestUrl = $IssueResponse.html_url
 
 # Kiểm tra trạng thái của issue
-if ($IssueResponse.state -eq "closed") {
-    Write-Host "Issue #$IssueNumber is already closed. Exiting script."
-    Exit 0
-}
+# if ($IssueResponse.state -eq "closed") {
+#     Write-Host "Issue #$IssueNumber is already closed. Exiting script."
+#     Exit 0
+# }
 
 # Step 2: Kiểm tra membership
 Write-Host "Validating membership for user $CreatorUsername..."
@@ -215,6 +221,29 @@ $PermissionUpdate = Update-PermissionFile -BaseApiUrl $BaseApiUrl `
     -FilePath $PermissionFilePath -BranchName $BranchStorePermissionFile `
     -RequesterEmail $RequesterEmail -IssueCreator $CreatorUsername `
     -SelectedPackage $SelectedPackage -AccessToken $AccessToken
+# Kiểm tra trạng thái quyền
+if ($PermissionUpdate.PermissionExists -eq $true) {
+    Write-Host "Permission for user '$CreatorUsername' to access package '$SelectedPackage' already exists."
+
+    # Comment lên issue
+    $CommentText = @"
+### 🚫 Request Denied: Permission Already Exists
+The requested permission for user '@$CreatorUsername' to access package '$SelectedPackage' already exists.
+
+No further action is required. Thank you! 😊
+"@
+    Comment-OnIssue -BaseApiUrl $BaseApiUrl `
+        -RepoOwner $RepoOwner -RepoName $NameOfRepoContainingPermissionRequest `
+        -IssueNumber $IssueNumber -CommentText $CommentText -Headers $Headers
+
+    # Đóng issue
+    Close-Issue -BaseApiUrl $BaseApiUrl `
+        -RepoOwner $RepoOwner -RepoName $NameOfRepoContainingPermissionRequest `
+        -IssueNumber $IssueNumber -CommentBody "Closing issue as the permission already exists." `
+        -Headers $Headers
+
+    Exit 0
+}
 
 # Step 5: Tạo branch mới
 Write-Host "Creating a new branch for the changes..."
