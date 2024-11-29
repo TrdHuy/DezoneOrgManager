@@ -29,4 +29,6 @@ jobs:
           CREATOR_PROFILE_URL: ${{ github.event.issue.user.html_url }}
           GITHUB_TOKEN: ${{ secrets.WORK_FLOW_ACCESS_TOKEN }}
           NAME_OF_REPO_TO_SUBMIT_REQUEST: ${{ secrets.NAME_OF_REPO_TO_SUBMIT_REQUEST }}
+          PERMISSION_FILE_PATH: ${{ secrets.PERMISSION_FILE_PATH }}
+          BRANCH_STORE_PERMISSION_FILE: ${{ secrets.BRANCH_STORE_PERMISSION_FILE }}
           ISLOCAL: false

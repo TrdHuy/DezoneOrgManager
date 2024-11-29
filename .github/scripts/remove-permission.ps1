@@ -81,6 +81,8 @@ $OrgNameForValidation = $env:ORG_NAME_FOR_VALIDATION
 $NameOfRepoContainingPermissionRequest = $env:NAME_OF_REPO_CONTAINING_PERMISSION_REQUEST
 $RepoForSubmitRequest = $env:NAME_OF_REPO_TO_SUBMIT_REQUEST
 $RepoOwner = $env:REPO_OWNER
+$PermissionFilePath = $env:PERMISSION_FILE_PATH
+$BranchStorePermissionFile = $env:BRANCH_STORE_PERMISSION_FILE
 $BaseApiUrl = "https://api.github.com"
 if ($ISLOCAL -eq $true) {
      Write-Host "Assign local variable"
@@ -99,9 +101,47 @@ if ($ISLOCAL -eq $true) {
      $RepoOwner = $localXmlDoc.configuration.RepoOwner
      $BaseApiUrl = $localXmlDoc.configuration.BaseApiUrl
      $RepoForSubmitRequest = $localXmlDoc.configuration.RepoForSubmitRequest
-
+     $PermissionFilePath = $localXmlDoc.configuration.PermissionFilePath
+     $BranchStorePermissionFile = $localXmlDoc.configuration.BranchStorePermissionFile
 }
-
+ 
+# Log giá trị các biến để debug
+Write-Host "=== DEBUG: ENVIRONMENT VARIABLES ==="
+Write-Host "Issue Number: $IssueNumber"
+Write-Host "Access Token: $([string]::IsNullOrEmpty($AccessToken) ? '<null>' : '<hidden>')" # Ẩn token khi log
+Write-Host "Org Name for Validation: $OrgNameForValidation"
+Write-Host "Repo Containing Permission Request: $NameOfRepoContainingPermissionRequest"
+Write-Host "Repo Owner: $RepoOwner"
+Write-Host "PermissionFilePath: $PermissionFilePath"
+Write-Host "Repo Owner: $RepoOwner"
+Write-Host "BranchStorePermissionFile: $BranchStorePermissionFile"
+Write-Host "====================================="
+ 
+# Kiểm tra giá trị null và throw lỗi nếu cần
+if (-not $IssueNumber) {
+     throw "Environment variable ISSUE_NUMBER is missing or null!"
+}
+if (-not $AccessToken) {
+     throw "Environment variable GITHUB_TOKEN is missing or null!"
+}
+if (-not $OrgNameForValidation) {
+     throw "Environment variable ORG_NAME_FOR_VALIDATION is missing or null!"
+}
+if (-not $NameOfRepoContainingPermissionRequest) {
+     throw "Environment variable NAME_OF_REPO_CONTAINING_PERMISSION_REQUEST is missing or null!"
+}
+if (-not $RepoOwner) {
+     throw "Environment variable REPO_OWNER is missing or null!"
+}
+if (-not $RepoForSubmitRequest) {
+     throw "Environment variable NAME_OF_REPO_TO_SUBMIT_REQUEST is missing or null!"
+}
+if (-not $PermissionFilePath) {
+     throw "Environment variable PERMISSION_FILE_PATH is missing or null!"
+}
+if (-not $BranchStorePermissionFile) {
+     throw "Environment variable BRANCH_STORE_PERMISSION_FILE is missing or null!"
+}
 # Headers
 $Headers = @{
      Accept        = "application/vnd.github.v3+json"

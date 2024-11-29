@@ -103,8 +103,9 @@ $OrgNameForValidation = $env:ORG_NAME_FOR_VALIDATION
 $NameOfRepoContainingPermissionRequest = $env:NAME_OF_REPO_CONTAINING_PERMISSION_REQUEST
 $RepoOwner = $env:REPO_OWNER
 $RepoForSubmitRequest = $env:NAME_OF_REPO_TO_SUBMIT_REQUEST
+$PermissionFilePath = $env:PERMISSION_FILE_PATH
+$BranchStorePermissionFile = $env:BRANCH_STORE_PERMISSION_FILE
 $BaseApiUrl = "https://api.github.com"
-
 if ($ISLOCAL -eq $true) {
     Write-Host "Assign local variable"
 
@@ -122,7 +123,8 @@ if ($ISLOCAL -eq $true) {
     $RepoForSubmitRequest = $localXmlDoc.configuration.RepoForSubmitRequest
     $RepoOwner = $localXmlDoc.configuration.RepoOwner
     $BaseApiUrl = $localXmlDoc.configuration.BaseApiUrl
-
+    $PermissionFilePath = $localXmlDoc.configuration.PermissionFilePath
+    $BranchStorePermissionFile = $localXmlDoc.configuration.BranchStorePermissionFile
 }
 
 # Log giá trị các biến để debug
@@ -132,7 +134,9 @@ Write-Host "Access Token: $([string]::IsNullOrEmpty($AccessToken) ? '<null>' : '
 Write-Host "Org Name for Validation: $OrgNameForValidation"
 Write-Host "Repo Containing Permission Request: $NameOfRepoContainingPermissionRequest"
 Write-Host "Repo Owner: $RepoOwner"
-Write-Host "Repo for Submit Request: $RepoForSubmitRequest"
+Write-Host "PermissionFilePath: $PermissionFilePath"
+Write-Host "Repo Owner: $RepoOwner"
+Write-Host "BranchStorePermissionFile: $BranchStorePermissionFile"
 Write-Host "====================================="
 
 # Kiểm tra giá trị null và throw lỗi nếu cần
@@ -154,7 +158,12 @@ if (-not $RepoOwner) {
 if (-not $RepoForSubmitRequest) {
     throw "Environment variable NAME_OF_REPO_TO_SUBMIT_REQUEST is missing or null!"
 }
-
+if (-not $PermissionFilePath) {
+    throw "Environment variable PERMISSION_FILE_PATH is missing or null!"
+}
+if (-not $BranchStorePermissionFile) {
+    throw "Environment variable BRANCH_STORE_PERMISSION_FILE is missing or null!"
+}
 # Headers
 $Headers = @{
     Accept        = "application/vnd.github.v3+json"
