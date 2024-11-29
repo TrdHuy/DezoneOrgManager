@@ -22,12 +22,12 @@ if ($ISLOCAL -eq $true) {
 
 # Kiểm tra tiêu đề issue
 Write-Host "Processing issue with title: $IssueTitle"
-
+$IssueTitle = $IssueTitle.Trim()
 if ($IssueTitle -eq "[PBPR] Package Build Permission") {
     Write-Host "Detected 'Add New Permission Request'. Calling add-new-permission-request.ps1..."
     & "$ScriptRoot/add-new-permission-request.ps1"
 }
-elseif ($IssueTitle -eq "[PBPR] Remove Permission") {
+elseif ($IssueTitle -eq "[PBPR] Remove permission") {
     Write-Host "Detected 'Remove Permission Request'. Calling remove-permission.ps1..."
     & "$ScriptRoot/remove-permission.ps1"
 }
