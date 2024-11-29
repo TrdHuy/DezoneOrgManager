@@ -55,25 +55,30 @@ function Extract-RemovePermissionDetails {
      $IssueDetails = @{}
  
      # Trích xuất GitHub Username
-     if ($IssueBody -match "(?m)### GitHub Username\s*\n(.+?)\n") {
+     if ($IssueBody -match "(?m)GitHub Username\s*\r?\n(.+?)($|\r?\n)") {
           $IssueDetails["GitHubUsername"] = $matches[1].Trim()
      }
      else {
-          Write-Error "GitHub Username not found in issue body!"
-          Exit 1
+          Write-Warning "GitHub Username not found in issue body!"
      }
  
      # Trích xuất Reason for Removal
-     if ($IssueBody -match "(?m)### Reason for Removal\s*\r?\n(.+?)($|\r?\n)") {
+     if ($IssueBody -match "(?m)Reason for Removal\s*\r?\n(.+?)($|\r?\n)") {
           $IssueDetails["ReasonForRemoval"] = $matches[1].Trim()
      }
      else {
-          Write-Error "Reason for Removal not found in issue body!"
+          Write-Warning "Reason for Removal not found in issue body!"
+     }
+ 
+     # Kiểm tra nếu thiếu thông tin bắt buộc
+     if (-not $IssueDetails["GitHubUsername"] -or -not $IssueDetails["ReasonForRemoval"]) {
+          return $null
      }
  
      # Trả về kết quả
      return $IssueDetails
 }
+ 
  
 $IssueNumber = $env:ISSUE_NUMBER
 $AccessToken = $env:GITHUB_TOKEN
@@ -167,6 +172,24 @@ Write-Host "Extracting remove permission details..."
 $Details = Extract-RemovePermissionDetails -IssueBody $IssueBody
 $GitHubUsernameToRemove = $Details["GitHubUsername"]
 $ReasonForRemoval = $Details["ReasonForRemoval"]
+if (-not $Details) {
+     Write-Warning "Missing required information. Closing issue and commenting."
+     $CommentText = @"
+ ### 🚫 Request Failed: Missing Required Information
+ Your request is missing required fields:
+ - GitHub Username
+ - Reason for Removal
+ 
+ Please ensure all fields are filled out and re-open this issue. Thank you! 😊
+"@
+     # Đóng issue
+     Close-Issue -BaseApiUrl $BaseApiUrl `
+          -RepoOwner $RepoOwner -RepoName $NameOfRepoContainingPermissionRequest `
+          -IssueNumber $IssueNumber `
+          -CommentBody $CommentText
+ 
+     Exit 1
+}
 
 # Step 3: Cập nhật file JSON để xóa quyền
 Write-Host "Updating permission file to remove user $GitHubUsernameToRemove..."
@@ -228,7 +251,7 @@ $PullRequestBody = @"
 ### GitHubUsernameToRemove: 
     $GitHubUsernameToRemove
 ### Reason:
-    $Reason
+    $ReasonForRemoval
 ### [Detail]($RequestUrl)
 "@
 

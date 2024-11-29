@@ -67,36 +67,39 @@ function Extract-IssueDetails {
     # Khởi tạo một hash table để lưu trữ kết quả
     $IssueDetails = @{}
 
-    # Trích xuất Email Address
-    if ($IssueBody -match "(?m)### Email Address\s*\n(.+?)\n") {
+    # Trích xuất Requester Email
+    if ($IssueBody -match "(?m)Email Address\s*\r?\n(.+?)($|\r?\n)") {
         $IssueDetails["RequesterEmail"] = $matches[1].Trim()
     }
     else {
-        Write-Error "Requester email not found in issue body!"
-        Exit 1
+        Write-Warning "Email Address not found in issue body!"
     }
 
-    # Trích xuất Select Package
-    if ($IssueBody -match "(?m)### Select Package\s*\n(.+?)\n") {
+    # Trích xuất Selected Package
+    if ($IssueBody -match "(?m)Select Package\s*\r?\n(.+?)($|\r?\n)") {
         $IssueDetails["SelectedPackage"] = $matches[1].Trim()
     }
     else {
-        Write-Error "Selected package not found in issue body!"
-        Exit 1
+        Write-Warning "Select Package not found in issue body!"
     }
 
-    # Trích xuất Reason for Request
-    if ($IssueBody -match "(?m)### Reason for Request\s*\n(.+?)\n") {
+    # Trích xuất Reason
+    if ($IssueBody -match "(?m)Reason for Request\s*\r?\n(.+?)($|\r?\n)") {
         $IssueDetails["Reason"] = $matches[1].Trim()
     }
     else {
-        Write-Error "Reason for request not found in issue body!"
-        Exit 1
+        Write-Warning "Reason for Request not found in issue body!"
+    }
+
+    # Kiểm tra nếu thiếu thông tin bắt buộc
+    if (-not $IssueDetails["RequesterEmail"] -or -not $IssueDetails["SelectedPackage"] -or -not $IssueDetails["Reason"]) {
+        return $null
     }
 
     # Trả về kết quả
     return $IssueDetails
 }
+
 
 $ISLOCAL = $env:ISLOCAL
 if (-not $ISLOCAL) {
@@ -213,6 +216,25 @@ $Details = Extract-IssueDetails -IssueBody $IssueBody
 $RequesterEmail = $Details["RequesterEmail"]
 $SelectedPackage = $Details["SelectedPackage"]
 $Reason = $Details["Reason"]
+if (-not $Details) {
+    Write-Warning "Missing required information. Closing issue and commenting."
+
+    $CommentText = @"
+### 🚫 Request Failed: Missing Required Information
+Your request is missing required fields:
+- Email Address
+- Select Package
+- Reason for Request
+
+Please ensure all fields are filled out and re-open this issue. Thank you! 😊
+"@
+    Close-Issue -BaseApiUrl $BaseApiUrl `
+        -RepoOwner $RepoOwner -RepoName $NameOfRepoContainingPermissionRequest `
+        -IssueNumber $IssueNumber `
+        -CommentBody $CommentText
+
+    Exit 1
+}
 
 # Step 4: Cập nhật file JSON
 Write-Host "Updating permission file..."

@@ -1,5 +1,5 @@
 name: "🔑 Request Build Permission"
-description: Request permissions to build a specific package.
+description: "📦 Request permissions to build a specific package."
 title: "[PBPR] Package Build Permission"
 labels: ["request"]
 
@@ -7,14 +7,15 @@ body:
   - type: markdown
     attributes:
       value: |
-        ## Request Build Permission
-        Please fill out the form below to request build permissions for a specific package.
-        Ensure all required fields are completed.
+        ## 🔑 Request Build Permission
+        Please fill out the form below to request build permissions for a specific package.  
+        Ensure all required fields are completed to avoid delays in processing your request. 📝
 
   - type: input
     attributes:
-      label: Email Address
-      description: Enter your email address to receive updates regarding your request.
+      label: 📧 Email Address
+      description: Enter your email address to receive updates regarding your request.  
+                   _Example: `example@example.com`_
       placeholder: "example@example.com"
     validations:
       required: true
@@ -22,7 +23,7 @@ body:
 
   - type: dropdown
     attributes:
-      label: Select Package
+      label: 📂 Select Package
       description: Choose the package for which you are requesting build permissions.
       options:
         - ArtWiz
@@ -31,14 +32,22 @@ body:
 
   - type: textarea
     attributes:
-      label: Reason for Request
-      description: Provide a brief explanation of why you need build permissions for this package.
+      label: ✍️ Reason for Request
+      description: Provide a brief explanation of why you need build permissions for this package.  
+                   _Example: `I am responsible for maintaining the package.`_
       placeholder: "Enter your reason here..."
     validations:
       required: true
 
   - type: textarea
     attributes:
-      label: Additional Notes
-      description: Include any additional information or context for your request.
+      label: 💬 Additional Notes
+      description: Include any additional information or context for your request.  
+                   _This field is optional._
       placeholder: "Optional field, you can leave it blank."
+
+  - type: markdown
+    attributes:
+      value: |
+        ### 🚀 Thank you for your request!  
+        Our team will review your submission and get back to you as soon as possible.
