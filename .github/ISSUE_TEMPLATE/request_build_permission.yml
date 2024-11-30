@@ -1,5 +1,6 @@
 name: "🔑 Request Build Permission"
-description: "📦 Request permissions to build a specific package."
+description: "📦 Request permissions to build a specific package.  
+              **⚠️ Important: Do not change the issue title!**"
 title: "[PBPR] Package Build Permission"
 labels: ["request"]
 
