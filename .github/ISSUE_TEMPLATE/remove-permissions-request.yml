@@ -1,5 +1,5 @@
 name: "🛑 Remove Build Permissions Request"
-description: "🚀 Request to remove all build permissions for a specific user"
+description: "**⚠️ Important: Do not change the issue title!**"
 title: "[PBPR] Remove permission "
 labels: 
   - "remove-permissions"
@@ -9,6 +9,7 @@ body:
     attributes:
       value: |
         ### 🛑 Remove Build Permissions Request
+        🚀 Request to remove all build permissions for a specific user
         **Use this template to request the removal of all build permissions for a specific user.**  
         Please fill out the required information below to help us process your request efficiently. 📝
 
