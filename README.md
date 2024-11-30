@@ -53,12 +53,22 @@ To remove build permissions for a user:
 ## 🛠️ Workflow Process
 
 ### For Build Permission Requests:
+
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/a8f9753c-8266-4885-815e-67e8d0181259" alt="napkin-selection">
+</div>
+
 1. Once a request is submitted, our system will validate the information provided.
 2. If valid, the request will be processed, and the requester will receive:
    - **An API Key**: Sent via email with instructions for usage.
 3. If the request is invalid, a comment will be added to the issue with rejection details.
 
 ### For Removal Requests:
+
+<div align="center">
+    <img src="https://github.com/user-attachments/assets/ec566daf-f522-4263-8ab2-9dec128f1f54" alt="napkin-selection">
+</div>
+
 1. Once a request is submitted, our system will validate the information provided.
 2. If valid, all build permissions for the specified user will be removed.
 3. If the request is invalid, a comment will be added to the issue with rejection details.
