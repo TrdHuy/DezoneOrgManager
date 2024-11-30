@@ -1,6 +1,5 @@
 name: "🔑 Request Build Permission"
-description: "📦 Request permissions to build a specific package.  
-              **⚠️ Important: Do not change the issue title!**"
+description: "**⚠️ Important: Do not change the issue title!**"
 title: "[PBPR] Package Build Permission"
 labels: ["request"]
 
@@ -9,6 +8,7 @@ body:
     attributes:
       value: |
         ## 🔑 Request Build Permission
+        📦 Request permissions to build a specific package. 
         Please fill out the form below to request build permissions for a specific package.  
         Ensure all required fields are completed to avoid delays in processing your request. 📝
 
