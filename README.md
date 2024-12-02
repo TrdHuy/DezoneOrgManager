@@ -22,7 +22,7 @@ This repository includes two issue templates to manage permissions:
 To request build permissions for a package:
 1. Go to the **[Issues](../../issues)** tab of this repository.
 2. Click on the **"New Issue"** button.
-3. Select the **"🔑 Request Build Permission"** template.
+3. Select the **"[🔑 Request Build Permission](https://github.com/TrdHuy/DezoneOrgManager/issues/new?assignees=&labels=request&projects=&template=request_build_permission.yml&title=%5BPBPR%5D+Package+Build+Permission)"** template.
 4. Fill out the required fields:
    - **📧 Email Address**: Enter your email to receive updates about the request.
    - **📂 Select Package**: Choose the package for which you need build permissions.
