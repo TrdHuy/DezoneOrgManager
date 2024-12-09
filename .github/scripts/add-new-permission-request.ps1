@@ -43,8 +43,11 @@ function Update-PermissionFile {
     }
     else {
         # Update existing user
-        if (-not $User.packages.$SelectedPackage) {
-            $User.packages.Add($SelectedPackage, $GeneratedApiKey)
+        if (-not $User.packages) {
+            $User | Add-Member -MemberType NoteProperty -Name packages -Value @{}
+        }
+        if ($User.packages.PSObject.Properties.Match($SelectedPackage).Count -eq 0) {
+            $User.packages | Add-Member -MemberType NoteProperty -Name $SelectedPackage -Value $GeneratedApiKey
         }
         else {
             # Permission already exists
