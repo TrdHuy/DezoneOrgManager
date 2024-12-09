@@ -28,6 +28,7 @@ body:
       description: Choose the package for which you are requesting build permissions.
       options:
         - ArtWiz
+        - ArtWizTest
     validations:
       required: true
 
