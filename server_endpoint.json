@@ -1,0 +1,6 @@
+{
+    "get_resource_key_api": {
+        "url": "https://dezone98.ddns.net:5001/api/BuildKey/GetClientResourceKeyv2",
+        "description": "API để lấy resource key."
+    }
+}
